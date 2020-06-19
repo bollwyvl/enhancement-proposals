@@ -8,17 +8,19 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
+    - uses: actions/setup-python@v1
       with:
         python-version: 3.7
 
-    - name: Install dependencies
-      run: |
-        pip install -U jupyter-book
+    - uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: pip-${{ hashFiles('.ci_support/requirements-build.txt') }}
 
-    - name: Build the book
-      run: |
+    - run: |
+        pip install -U -r .ci_support/requirements-build.txt
+
+    - run: |
         jupyter-book build .
 
     - uses: actions/upload-artifact@v2
@@ -38,13 +40,18 @@ jobs:
           name: _build
           path: _build
 
+      - name: Cache conda
+        uses: actions/cache@v1
+        with:
+          path: ~/conda_pkgs_dir
+          key: conda-${{ hashFiles('.ci_support/environment-spelling.yml') }}
+
       - uses: goanpeca/setup-miniconda@v1.6.0
         with:
-          channels: conda-forge
-
-      - shell: bash -l {0}
-        run: |
-          conda install -yc conda-forge hunspell-en
+          activate-environment: jep-spelling
+          channel-priority: strict
+          environment-file: .ci_support/environment-spelling.yml
+          use-only-tar-bz2: true
 
       - shell: bash -l {0}
         run: |
@@ -67,12 +74,17 @@ jobs:
           path: .pytest-check-links-cache.sqlite
           key: ${{ runner.os }}-link-cache
 
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('.ci_support/requirements-check-links.txt') }}
+
       - uses: actions/setup-python@v1
         with:
           python-version: 3.7
 
       - run: |
-          pip install -U pytest-check-links requests_cache
+          pip install -U -r .ci_support/requirements-check-links.txt
 
       - run: |
           bash .ci_support/check_links.sh
