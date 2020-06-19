@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eu
+set -euo pipefail
 
 CACHE_NAME=$(pwd)/.pytest-check-links-cache
 
