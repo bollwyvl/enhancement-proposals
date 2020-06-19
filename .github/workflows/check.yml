@@ -72,6 +72,5 @@ jobs:
       - run: |
           pip install -U pytest-check-links requests_cache
 
-      - shell: bash -l {0}
-        run: |
+      - run: |
           bash .ci_support/check_links.sh
