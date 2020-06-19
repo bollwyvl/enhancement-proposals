@@ -22,7 +22,9 @@ jobs:
 
     - run: |
         pip install -U pip wheel
-        && pip install -U -r .ci_support/requirements-build.txt
+
+    - run: |
+        pip install -U -r .ci_support/requirements-build.txt
 
     - run: |
         jupyter-book build .
@@ -95,7 +97,9 @@ jobs:
 
       - run: |
           pip install -U pip wheel
-          && pip install -U -r .ci_support/requirements-check-links.txt
+
+      - run: |
+          pip install -U -r .ci_support/requirements-check-links.txt
 
       - run: |
           bash .ci_support/check_links.sh
