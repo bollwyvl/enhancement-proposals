@@ -48,7 +48,7 @@ jobs:
 
       - uses: goanpeca/setup-miniconda@v1.6.0
         with:
-          activate-environment: jep-spelling
+          activate-environment: spelling
           channel-priority: strict
           environment-file: .ci_support/environment-spelling.yml
           use-only-tar-bz2: true
