@@ -67,6 +67,10 @@ jobs:
           path: .pytest-check-links-cache.sqlite
           key: ${{ runner.os }}-link-cache
 
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+
       - run: |
           pip install -U pytest-check-links requests_cache
 
