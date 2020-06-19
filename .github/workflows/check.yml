@@ -41,6 +41,8 @@ jobs:
       - uses: goanpeca/setup-miniconda@v1.6.0
         with:
           mamba-version: "*"
+          channels: conda-forge
+          channel-priority: true
 
       - shell: bash -l {0}
         run: |
