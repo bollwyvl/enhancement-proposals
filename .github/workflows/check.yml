@@ -15,10 +15,14 @@ jobs:
     - uses: actions/cache@v2
       with:
         path: ~/.cache/pip
-        key: pip-${{ hashFiles('.ci_support/requirements-build.txt') }}
+        key: pip-build-${{ hashFiles('.ci_support/requirements-build.txt') }}
+        restore-keys: |
+          pip-build-
+          pip-
 
     - run: |
-        pip install -U -r .ci_support/requirements-build.txt
+        pip install -U pip wheel
+        && pip install -U -r .ci_support/requirements-build.txt
 
     - run: |
         jupyter-book build .
@@ -44,7 +48,10 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/conda_pkgs_dir
-          key: conda-${{ hashFiles('.ci_support/environment-spelling.yml') }}
+          key: conda-spelling-${{ hashFiles('.ci_support/environment-spelling.yml') }}
+          restore-keys: |
+            conda-spelling-
+            conda-
 
       - uses: goanpeca/setup-miniconda@v1.6.0
         with:
@@ -72,19 +79,23 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: .pytest-check-links-cache.sqlite
-          key: ${{ runner.os }}-link-cache
+          key: link-cache
 
       - uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: pip-${{ hashFiles('.ci_support/requirements-check-links.txt') }}
+          key: pip-check-links-${{ hashFiles('.ci_support/requirements-check-links.txt') }}
+          restore-keys: |
+            pip-check-links-
+            pip-
 
       - uses: actions/setup-python@v1
         with:
           python-version: 3.7
 
       - run: |
-          pip install -U -r .ci_support/requirements-check-links.txt
+          pip install -U pip wheel
+          && pip install -U -r .ci_support/requirements-check-links.txt
 
       - run: |
           bash .ci_support/check_links.sh
