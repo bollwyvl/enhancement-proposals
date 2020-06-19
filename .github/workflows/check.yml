@@ -21,9 +21,6 @@ jobs:
           pip-
 
     - run: |
-        pip install -U pip wheel
-
-    - run: |
         pip install -U -r .ci_support/requirements-build.txt
 
     - run: |
@@ -94,9 +91,6 @@ jobs:
       - uses: actions/setup-python@v1
         with:
           python-version: 3.7
-
-      - run: |
-          pip install -U pip wheel
 
       - run: |
           pip install -U -r .ci_support/requirements-check-links.txt
